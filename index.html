@@ -1,0 +1,1012 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Club PVPSIT</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+    
+    <!-- NEW: tsParticles Library for Particle Background -->
+    <script src="https://cdn.jsdelivr.net/npm/tsparticles-slim@2.12.0/tsparticles.slim.bundle.min.js"></script>
+
+    <!-- Custom Tailwind Configuration -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'ai-blue': '#0ea5e9',
+                        'ai-dark-blue': '#0284c7',
+                        'ai-light-blue': '#38bdf8',
+                        'ai-purple': '#8b5cf6',
+                        'ai-dark-purple': '#7c3aed',
+                        'ai-cyan': '#06b6d4',
+                        'ai-green': '#10b981',
+                        'ai-orange': '#f97316',
+                        'ai-pink': '#ec4899',
+                        'ai-yellow': '#eab308',
+                        'ai-gray': '#1e293b',
+                        'ai-light-gray': '#334155',
+                    },
+                    fontFamily: {
+                        'sans': ['Inter', 'sans-serif'],
+                        'mono': ['JetBrains Mono', 'monospace']
+                    },
+                    animation: {
+                        'float': 'float 6s ease-in-out infinite',
+                        'glow': 'glow 2s ease-in-out infinite alternate',
+                        'spin-slow': 'spin 12s linear infinite'
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0px)' },
+                            '50%': { transform: 'translateY(-20px)' },
+                        },
+                        glow: {
+                            'from': { boxShadow: '0 0 15px #0ea5e9, 0 0 20px #8b5cf6' },
+                            'to': { boxShadow: '0 0 30px #8b5cf6, 0 0 40px #ec4899' },
+                        },
+                    }
+                }
+            }
+        };
+    </script>
+    
+    <!-- Custom CSS -->
+    <style>
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #e2e8f0; }
+        ::-webkit-scrollbar-thumb { background: linear-gradient(to bottom, #0ea5e9, #8b5cf6); border-radius: 4px; }
+        
+        .mobile-menu {
+            transform: translateX(100%);
+            transition: transform 0.3s ease-in-out;
+        }
+        .mobile-menu.active {
+            transform: translateX(0);
+        }
+        .animate-on-scroll {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+        .animate-on-scroll.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .carousel-container {
+            scroll-snap-type: x mandatory;
+            -webkit-overflow-scrolling: touch;
+        }
+        .carousel-item {
+            scroll-snap-align: center;
+        }
+
+        /* NEW: Styles for Particle Background Container */
+        #tsparticles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1; /* This is crucial to keep it in the background */
+        }
+    </style>
+</head>
+<body class="bg-transparent antialiased"> <!-- Changed bg-gray-50 to bg-transparent to let particles show through -->
+
+<!-- NEW: Particle background container -->
+<div id="tsparticles"></div>
+<button id="color-toggle" class="fixed bottom-6 right-6 z-50 w-14 h-14 bg-white rounded-full shadow-lg flex items-center justify-center text-ai-gray hover:bg-slate-100 transition-all transform hover:scale-110">
+    <i id="theme-icon" class="fas fa-sun text-2xl"></i>
+</button>
+    
+<!-- Mobile Menu -->
+<div id="mobile-overlay" class="fixed inset-0 bg-black bg-opacity-50 z-40 hidden transition-opacity duration-300"></div>
+<div id="mobile-menu" class="mobile-menu fixed top-0 right-0 h-full w-80 bg-white shadow-2xl z-50 p-6">
+    <div class="flex justify-between items-center mb-8">
+        <h3 class="text-xl font-bold text-ai-gray">Navigation</h3>
+        <button id="close-menu" class="text-ai-gray hover:text-ai-blue transition-colors">
+            <i class="fas fa-times text-2xl"></i>
+        </button>
+    </div>
+    <nav class="flex flex-col space-y-6">
+        <a href="#home" class="mobile-nav-link text-lg text-ai-gray hover:text-ai-blue font-medium transition-colors">Home</a>
+        <a href="#about" class="mobile-nav-link text-lg text-ai-gray hover:text-ai-blue font-medium transition-colors">About</a>
+        <a href="#events" class="mobile-nav-link text-lg text-ai-gray hover:text-ai-blue font-medium transition-colors">Events</a>
+        <a href="#team" class="mobile-nav-link text-lg text-ai-gray hover:text-ai-blue font-medium transition-colors">Team</a>
+        <a href="#gallery" class="mobile-nav-link text-lg text-ai-gray hover:text-ai-blue font-medium transition-colors">Gallery</a>
+        <a href="#contact" class="mobile-nav-link text-lg text-ai-gray hover:text-ai-blue font-medium transition-colors">Contact</a>
+    </nav>
+</div>
+
+<!-- Give the image a class and remove inline styles -->
+<img src="./images/head.png" alt="PVPSIT" width="100%" height="auto">
+
+<!-- COMPONENT: Navigation Header -->
+<header id="header" class="bg-slate-100/80 backdrop-blur-lg shadow-sm sticky top-0 z-30 transition-all duration-300">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between items-center h-20">
+            <a href="#home" class="flex items-center space-x-3">
+                <div class="w-12 h-12 bg-gradient-to-br from-ai-blue to-ai-purple rounded-xl flex items-center justify-center animate-glow shadow-lg">
+                    <i class="fa-solid fa-brain text-white text-xl"></i>
+                </div>
+                <div>
+                    <h1 class="text-xl font-bold text-ai-gray">AI Club</h1>
+                    <p class="text-sm text-gray-600">PVPSIT</p>
+                </div>
+            </a>
+            
+            <nav class="hidden md:flex items-center space-x-8">
+                <a href="#home" class="text-ai-gray hover:text-ai-blue font-medium transition-colors">Home</a>
+                <a href="#about" class="text-ai-gray hover:text-ai-blue font-medium transition-colors">About</a>
+                <a href="#events" class="text-ai-gray hover:text-ai-blue font-medium transition-colors">Events</a>
+                <a href="#team" class="text-ai-gray hover:text-ai-blue font-medium transition-colors">Team</a>
+                <a href="#gallery" class="text-ai-gray hover:text-ai-blue font-medium transition-colors">Gallery</a>
+                <a href="#contact" class="text-ai-gray hover:text-ai-blue font-medium transition-colors">Contact</a>
+            </nav>
+            
+            <div class="flex items-center space-x-4">
+                <a href="#contact" class="hidden sm:block bg-gradient-to-r from-ai-blue to-ai-purple text-white px-6 py-2.5 rounded-lg font-semibold hover:shadow-lg transform hover:-translate-y-0.5 transition-all duration-300">
+                    Join Us
+                </a>
+                <button id="menu-toggle" class="md:hidden text-ai-gray hover:text-ai-blue transition-colors">
+                    <i class="fa-solid fa-bars text-2xl"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- COMPONENT: Hero Section -->
+<section id="home" class="relative min-h-[70vh] md:h-[300px] flex items-center bg-gradient-to-br from-ai-blue/80 via-ai-purple/80 to-ai-dark-blue/80 overflow-hidden">
+    <div class="absolute inset-0">
+        <img class="w-full h-full object-cover opacity-20" src="./images/hero.png" alt="Futuristic AI neural network visualization">
+    </div>
+    <div data-parallax-speed="0.3" class="parallax-el absolute top-10 left-10 w-32 h-32 bg-ai-cyan rounded-full mix-blend-screen filter blur-xl opacity-30 animate-float"></div>
+    <div data-parallax-speed="0.5" class="parallax-el absolute top-20 right-20 w-24 h-24 bg-ai-purple rounded-full mix-blend-screen filter blur-xl opacity-30 animate-float" style="animation-delay: 2s;"></div>
+    
+    <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center z-10">
+        <div class="animate-on-scroll is-visible">
+            <h1 class="text-5xl md:text-7xl font-bold text-white mb-6 leading-tight">
+                Exploring AI
+                <span class="bg-gradient-to-r from-ai-yellow to-white bg-clip-text text-transparent">Frontiers</span>
+                Together
+            </h1>
+            <p class="text-xl md:text-2xl text-blue-100 mb-8 max-w-3xl mx-auto">
+                Join PVPSIT's premier AI community where innovation meets collaboration. Dive deep into machine learning, data science, and the future of artificial intelligence.
+            </p>
+            <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                <a href="#about" class="bg-ai-yellow text-ai-gray px-8 py-4 rounded-lg font-semibold text-lg hover:bg-yellow-300 transform hover:-translate-y-1 transition-all shadow-xl">
+                    Learn More
+                </a>
+                <a href="#events" class="border-2 border-white text-white px-8 py-4 rounded-lg font-semibold text-lg hover:bg-white hover:text-ai-blue transform hover:-translate-y-1 transition-all">
+                    View Events
+                </a>
+            </div>
+        </div>
+    </div>
+    <div class="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-gray-50 to-transparent"></div>
+</section>
+
+<!-- COMPONENT: Quick Introduction -->
+<section class="py-24 bg-white/80 backdrop-blur-sm">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-16 animate-on-scroll">
+            <h2 class="text-4xl font-bold text-ai-gray mb-6">Welcome to the Future</h2>
+            <p class="text-xl text-gray-600 max-w-4xl mx-auto leading-relaxed">
+                The AI Club at PVPSIT is a dynamic community dedicated to exploring artificial intelligence and machine learning. 
+                We foster innovation, collaboration, and hands-on learning through workshops, projects, and cutting-edge research opportunities.
+            </p>
+        </div>
+        
+        <div class="grid md:grid-cols-3 gap-8">
+            <div class="animate-on-scroll group bg-gradient-to-br from-ai-blue to-ai-light-blue p-8 rounded-3xl text-white transform hover:-translate-y-2 transition-all duration-300 shadow-lg hover:shadow-2xl hover:shadow-ai-blue/30">
+                <div class="w-16 h-16 bg-white/20 rounded-2xl flex items-center justify-center mb-6 group-hover:animate-spin-slow">
+                    <i class="fa-solid fa-lightbulb text-3xl"></i>
+                </div>
+                <h3 class="text-2xl font-bold mb-4">Innovation Hub</h3>
+                <p class="text-blue-100">Explore cutting-edge AI technologies and develop groundbreaking solutions to real-world problems.</p>
+            </div>
+            
+            <div class="animate-on-scroll group bg-gradient-to-br from-ai-purple to-purple-600 p-8 rounded-3xl text-white transform hover:-translate-y-2 transition-all duration-300 shadow-lg hover:shadow-2xl hover:shadow-ai-purple/30" style="transition-delay: 150ms;">
+                <div class="w-16 h-16 bg-white/20 rounded-2xl flex items-center justify-center mb-6 group-hover:animate-spin-slow">
+                    <i class="fa-solid fa-users text-3xl"></i>
+                </div>
+                <h3 class="text-2xl font-bold mb-4">Collaborative Learning</h3>
+                <p class="text-purple-100">Work alongside passionate peers and experienced mentors in a supportive learning environment.</p>
+            </div>
+            
+            <div class="animate-on-scroll group bg-gradient-to-br from-ai-yellow to-yellow-500 p-8 rounded-3xl text-white transform hover:-translate-y-2 transition-all duration-300 shadow-lg hover:shadow-2xl hover:shadow-ai-yellow/30" style="transition-delay: 300ms;">
+                <div class="w-16 h-16 bg-white/20 rounded-2xl flex items-center justify-center mb-6 group-hover:animate-spin-slow">
+                    <i class="fa-solid fa-rocket text-3xl"></i>
+                </div>
+                <h3 class="text-2xl font-bold mb-4">Career Growth</h3>
+                <p class="text-yellow-100">Build industry-relevant skills and connect with professionals to accelerate your AI career journey.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- COMPONENT: About Section -->
+<section id="about" class="py-20 bg-slate-100/80 backdrop-blur-sm">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-16">
+            <h2 class="text-4xl font-bold text-ai-gray mb-6">About Our Club</h2>
+            <p class="text-xl text-gray-600 max-w-3xl mx-auto">Discover our mission, vision, and the passionate community driving AI innovation at PVPSIT</p>
+        </div>
+        
+        <div class="grid md:grid-cols-2 gap-12 mb-16">
+            <div class="bg-gradient-to-br from-ai-blue to-ai-light-blue p-8 rounded-2xl text-white">
+                <div class="w-16 h-16 bg-white/20 rounded-xl flex items-center justify-center mb-6">
+                    <i class="fa-solid fa-bullseye text-3xl"></i>
+                </div>
+                <h3 class="text-3xl font-bold mb-6">Our Mission</h3>
+                <p class="text-lg text-blue-100 leading-relaxed">
+                    To cultivate a dynamic and collaborative community of students dedicated to exploring the frontiers of 
+                    Artificial Intelligence and Machine Learning. We strive to bridge the gap between theoretical knowledge 
+                    and practical application through hands-on projects, workshops, and innovative research initiatives.
+                </p>
+            </div>
+            
+            <div class="bg-gradient-to-br from-ai-purple to-purple-600 p-8 rounded-2xl text-white">
+                <div class="w-16 h-16 bg-white/20 rounded-xl flex items-center justify-center mb-6">
+                    <i class="fa-solid fa-eye text-3xl"></i>
+                </div>
+                <h3 class="text-3xl font-bold mb-6">Our Vision</h3>
+                <p class="text-lg text-purple-100 leading-relaxed">
+                    To become a leading student-run organization recognized for its contributions to applied AI and its role 
+                    in fostering the next generation of AI pioneers, researchers, and innovators. We envision a future where 
+                    our members lead breakthrough discoveries and ethical AI development worldwide.
+                </p>
+            </div>
+        </div>
+        
+        <div class="bg-gray-50 rounded-2xl p-8 md:p-12">
+            <div class="flex flex-col md:flex-row items-center gap-8">
+                <div class="w-48 h-48 rounded-2xl overflow-hidden flex-shrink-0">
+                    <img src="./images/FACULTY.jpg" alt="Faculty Advisor" class="w-full h-full object-cover">
+                </div>
+                <div class="flex-1">
+                    <h3 class="text-3xl font-bold text-ai-gray mb-4">Faculty Advisor's Message</h3>
+                    <p class="text-lg text-gray-600 mb-6 leading-relaxed">
+                        "It is with great excitement that we launch the AI Club at PVPSIT. This initiative marks a significant step towards building a vibrant community for aspiring AI enthusiasts. I am confident that this club will become a hub of innovation, where students can explore, learn, and collaborate on the technologies that are shaping our future. I encourage all curious minds to join us in building this community from the ground up and to embark on this exciting journey together."
+                    </p>
+                    <div class="flex items-center space-x-4">
+                        <div>
+                            <p class="font-semibold text-ai-gray">Dr. XXXXXX</p>
+                            <p class="text-gray-600">Assistant Professor, Computer Science Engineering (Data Science) Department</p>
+                            <p class="text-gray-600">Faculty Advisor, AI Club PVPSIT</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="mt-16 grid md:grid-cols-2 gap-8">
+            <div class="bg-white border-2 border-ai-blue rounded-2xl p-8">
+                <div class="flex items-center mb-6">
+                    <div class="w-12 h-12 bg-ai-blue rounded-xl flex items-center justify-center mr-4">
+                        <i class="fa-solid fa-comments text-white"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-ai-gray">Communication Hub</h3>
+                </div>
+                <p class="text-gray-600 mb-4">
+                    We maintain active communication through Discord servers for daily interactions and our dedicated website 
+                    serves as the central hub for event calendars, learning resources, and project showcases.
+                </p>
+                <div class="flex space-x-3">
+                    <span class="bg-ai-blue/10 text-ai-blue px-3 py-1 rounded-full text-sm font-medium">Website</span>
+                    <span class="bg-ai-blue/10 text-ai-blue px-3 py-1 rounded-full text-sm font-medium">WhatsApp</span>
+                </div>
+            </div>
+            
+            <div class="bg-white border-2 border-ai-purple rounded-2xl p-8">
+                <div class="flex items-center mb-6">
+                    <div class="w-12 h-12 bg-ai-purple rounded-xl flex items-center justify-center mr-4">
+                        <i class="fa-solid fa-cloud text-white"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-ai-gray">Shared Resources</h3>
+                </div>
+                <p class="text-gray-600 mb-4">
+                    All project files, code samples, research papers, and learning materials are stored in our shared 
+                    Google Drive, ensuring every member has access to comprehensive resources for continuous learning.
+                </p>
+                <div class="flex space-x-3">
+                    <span class="bg-ai-purple/10 text-ai-purple px-3 py-1 rounded-full text-sm font-medium">Google Drive</span>
+                    <span class="bg-ai-purple/10 text-ai-purple px-3 py-1 rounded-full text-sm font-medium">GitHub</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- COMPONENT: What We Do -->
+<section id="what-we-do" class="py-24 bg-slate-200/80 backdrop-blur-sm">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-16 animate-on-scroll">
+            <h2 class="text-4xl font-bold text-ai-gray mb-4">What We Do</h2>
+            <p class="text-lg text-slate-500">Comprehensive AI & Data Science experiences</p>
+        </div>
+        
+        <div class="grid lg:grid-cols-3 gap-8 mb-16">
+            <div class="animate-on-scroll group bg-gradient-to-br from-ai-blue to-ai-light-blue p-8 rounded-3xl text-white transform hover:-translate-y-2 transition-all duration-300 shadow-lg hover:shadow-2xl hover:shadow-ai-blue/30">
+                <div class="w-16 h-16 bg-white/20 rounded-2xl flex items-center justify-center mb-6 group-hover:animate-spin-slow">
+                    <i class="fa-solid fa-brain text-3xl"></i>
+                </div>
+                <h3 class="text-2xl font-bold mb-4">Machine Learning</h3>
+                <p class="text-blue-100 mb-6">Master supervised, unsupervised, and reinforcement learning algorithms through hands-on projects and real-world applications.</p>
+                <ul class="space-y-2 text-sm">
+                    <li class="flex items-center"><i class="fas fa-check-circle mr-2 text-white/50"></i> Neural Networks</li>
+                    <li class="flex items-center"><i class="fas fa-check-circle mr-2 text-white/50"></i> Deep Learning</li>
+                    <li class="flex items-center"><i class="fas fa-check-circle mr-2 text-white/50"></i> Computer Vision</li>
+                </ul>
+            </div>
+            
+            <div class="animate-on-scroll group bg-gradient-to-br from-ai-purple to-ai-dark-purple p-8 rounded-3xl text-white transform hover:-translate-y-2 transition-all duration-300 shadow-lg hover:shadow-2xl hover:shadow-ai-purple/30" style="transition-delay: 150ms;">
+                <div class="w-16 h-16 bg-white/20 rounded-2xl flex items-center justify-center mb-6 group-hover:animate-spin-slow">
+                    <i class="fa-solid fa-chart-bar text-3xl"></i>
+                </div>
+                <h3 class="text-2xl font-bold mb-4">Data Science</h3>
+                <p class="text-purple-100 mb-6">Extract insights from data using statistical analysis, visualization, and predictive modeling techniques.</p>
+                <ul class="space-y-2 text-sm">
+                    <li class="flex items-center"><i class="fas fa-check-circle mr-2 text-white/50"></i> Data Analysis</li>
+                    <li class="flex items-center"><i class="fas fa-check-circle mr-2 text-white/50"></i> Statistical Modeling</li>
+                    <li class="flex items-center"><i class="fas fa-check-circle mr-2 text-white/50"></i> Data Visualization</li>
+                </ul>
+            </div>
+            
+            <div class="animate-on-scroll group bg-gradient-to-br from-ai-cyan to-ai-green p-8 rounded-3xl text-white transform hover:-translate-y-2 transition-all duration-300 shadow-lg hover:shadow-2xl hover:shadow-ai-cyan/30" style="transition-delay: 300ms;">
+                <div class="w-16 h-16 bg-white/20 rounded-2xl flex items-center justify-center mb-6 group-hover:animate-spin-slow">
+                    <i class="fa-solid fa-robot text-3xl"></i>
+                </div>
+                <h3 class="text-2xl font-bold mb-4">AI Applications</h3>
+                <p class="text-cyan-100 mb-6">Build practical AI solutions including chatbots, recommendation systems, and intelligent automation.</p>
+                <ul class="space-y-2 text-sm">
+                    <li class="flex items-center"><i class="fas fa-check-circle mr-2 text-white/50"></i> NLP & Chatbots</li>
+                    <li class="flex items-center"><i class="fas fa-check-circle mr-2 text-white/50"></i> Recommendation Systems</li>
+                    <li class="flex items-center"><i class="fas fa-check-circle mr-2 text-white/50"></i> AI Automation</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-16 animate-on-scroll">
+            <h2 class="text-4xl font-bold text-ai-gray mb-4">Technologies We Master</h2>
+            <p class="text-lg text-slate-500 font-mono">From fundamentals to cutting-edge frameworks</p>
+        </div>
+        
+        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-8">
+            <div class="animate-on-scroll group p-6 text-center bg-white border border-slate-200 rounded-2xl hover:shadow-xl hover:border-ai-blue hover:-translate-y-2 transition-all duration-300">
+                <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg" class="h-16 mx-auto mb-4 grayscale group-hover:grayscale-0 transition-all" alt="Python Icon"/>
+                <h4 class="font-bold text-ai-gray">Python</h4>
+            </div>
+            <div class="animate-on-scroll group p-6 text-center bg-white border border-slate-200 rounded-2xl hover:shadow-xl hover:border-ai-orange hover:-translate-y-2 transition-all duration-300" style="transition-delay: 50ms;">
+                <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/tensorflow/tensorflow-original.svg" class="h-16 mx-auto mb-4 grayscale group-hover:grayscale-0 transition-all" alt="TensorFlow Icon"/>
+                <h4 class="font-bold text-ai-gray">TensorFlow</h4>
+            </div>
+            <div class="animate-on-scroll group p-6 text-center bg-white border border-slate-200 rounded-2xl hover:shadow-xl hover:border-ai-dark-purple hover:-translate-y-2 transition-all duration-300" style="transition-delay: 100ms;">
+                <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/pytorch/pytorch-original.svg" class="h-16 mx-auto mb-4 grayscale group-hover:grayscale-0 transition-all" alt="PyTorch Icon"/>
+                <h4 class="font-bold text-ai-gray">PyTorch</h4>
+            </div>
+            <div class="animate-on-scroll group p-6 text-center bg-white border border-slate-200 rounded-2xl hover:shadow-xl hover:border-ai-green hover:-translate-y-2 transition-all duration-300" style="transition-delay: 150ms;">
+                <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/pandas/pandas-original.svg" class="h-16 mx-auto mb-4 grayscale group-hover:grayscale-0 transition-all" alt="Pandas Icon"/>
+                <h4 class="font-bold text-ai-gray">Pandas</h4>
+            </div>
+            <div class="animate-on-scroll group p-6 text-center bg-white border border-slate-200 rounded-2xl hover:shadow-xl hover:border-ai-cyan hover:-translate-y-2 transition-all duration-300" style="transition-delay: 200ms;">
+                 <img src="https://upload.wikimedia.org/wikipedia/commons/0/05/Scikit_learn_logo_small.svg" class="h-16 mx-auto mb-4 grayscale group-hover:grayscale-0 transition-all" alt="Scikit-learn Icon"/>
+                <h4 class="font-bold text-ai-gray">Scikit-learn</h4>
+            </div>
+            <div class="animate-on-scroll group p-6 text-center bg-white border border-slate-200 rounded-2xl hover:shadow-xl hover:border-ai-pink hover:-translate-y-2 transition-all duration-300" style="transition-delay: 250ms;">
+                <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/numpy/numpy-original.svg" class="h-16 mx-auto mb-4 grayscale group-hover:grayscale-0 transition-all" alt="NumPy Icon"/>
+                <h4 class="font-bold text-ai-gray">NumPy</h4>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<!-- COMPONENT: Events Section -->
+<section id="events" class="py-24 bg-gray-50/80 backdrop-blur-sm">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-16 animate-on-scroll">
+            <h2 class="text-4xl font-bold text-ai-gray mb-4">Upcoming Events</h2>
+            <p class="text-lg text-slate-500 max-w-3xl mx-auto">Don't miss these exciting, hands-on learning experiences designed to advance your AI expertise.</p>
+        </div>
+        
+        <!-- Flex container to center the cards -->
+        <div class="flex flex-wrap items-stretch justify-center gap-8">
+
+            <!-- Combined Card 1: Data Detectives Workshop -->
+            <div class="animate-on-scroll group bg-white rounded-3xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 overflow-hidden border border-slate-200 w-full max-w-lg flex flex-col">
+                <!-- Image Header with Details -->
+                <div class="relative h-64">
+                    <img class="w-full h-full object-cover" src="./images/Act1.png" alt="Detective-themed data analysis workshop">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+                    <div class="absolute top-4 right-4 bg-ai-yellow text-ai-gray px-3 py-1 rounded-full text-sm font-bold flex items-center gap-2 shadow-md">
+                        <i class="fas fa-calendar-alt"></i>Dec 15
+                    </div>
+                    <div class="absolute bottom-4 left-4 text-white text-sm font-semibold flex items-center gap-2">
+                        <i class="fas fa-users"></i><span>Team Workshop</span>
+                    </div>
+                </div>
+                <!-- Content Body -->
+                <div class="p-8 flex flex-col flex-grow">
+                    <h3 class="text-2xl font-bold text-ai-gray mb-3">Data Detectives Workshop</h3>
+                    <p class="text-slate-600 mb-6 text-sm flex-grow">A fun, beginner-friendly workshop where data analysis is framed as a mystery to be solved. Participants form detective agencies to crack 'case files' using messy datasets, learning to clean data and uncover hidden patterns collaboratively.</p>
+                    
+                    <div class="grid grid-cols-2 gap-4 mb-6">
+                        <div class="text-center p-3 bg-blue-50 rounded-lg border border-blue-100">
+                            <i class="fa-solid fa-clock text-ai-blue text-xl mb-2"></i>
+                            <p class="text-sm font-medium text-ai-gray">3-4 Hours</p>
+                        </div>
+                        <div class="text-center p-3 bg-purple-50 rounded-lg border border-purple-100">
+                            <i class="fa-solid fa-gift text-ai-green text-xl mb-2"></i>
+                            <p class="text-sm font-medium text-ai-gray">Prizes Awarded</p>
+                        </div>
+                    </div>
+
+                    <div class="flex flex-wrap gap-2 mb-8">
+                        <span class="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-xs font-mono">Python</span>
+                        <span class="bg-purple-100 text-purple-700 px-3 py-1 rounded-full text-xs font-mono">Pandas</span>
+                        <span class="bg-green-100 text-green-700 px-3 py-1 rounded-full text-xs font-mono">Colab</span>
+                    </div>
+
+                    <button class="w-full mt-auto bg-ai-blue text-white px-6 py-3 rounded-xl font-semibold hover:bg-ai-dark-blue transition-colors group">
+                        <i class="fas fa-sign-in-alt mr-2 group-hover:translate-x-1 transition-transform"></i>Register Now
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Combined Card 2: Build-a-Bot Challenge -->
+            <div class="animate-on-scroll group bg-white rounded-3xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 overflow-hidden border border-slate-200 w-full max-w-lg flex flex-col" style="transition-delay: 150ms;">
+                <!-- Image Header with Details -->
+                <div class="relative h-64">
+                     <img class="w-full h-full object-cover" src="./images/Act2.png" alt="Chatbot development challenge">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+                    <div class="absolute top-4 right-4 bg-ai-yellow text-ai-gray px-3 py-1 rounded-full text-sm font-bold flex items-center gap-2 shadow-md">
+                        <i class="fas fa-calendar-alt"></i>Jan 8
+                    </div>
+                    <div class="absolute bottom-4 left-4 text-white text-sm font-semibold flex items-center gap-2">
+                        <i class="fas fa-trophy"></i><span>Competition</span>
+                    </div>
+                </div>
+                 <!-- Content Body -->
+                <div class="p-8 flex flex-col flex-grow">
+                    <h3 class="text-2xl font-bold text-ai-gray mb-3">Build-a-Bot Challenge</h3>
+                    <p class="text-slate-600 mb-6 text-sm flex-grow">A comprehensive session focused on building a functional Question-Answering chatbot from scratch. This multi-phase challenge includes remote development time and culminates in a live showcase with expert judging.</p>
+                    
+                     <div class="grid grid-cols-2 gap-4 mb-6">
+                        <div class="text-center p-3 bg-purple-50 rounded-lg border border-purple-100">
+                            <i class="fa-solid fa-calendar text-ai-purple text-xl mb-2"></i>
+                            <p class="text-sm font-medium text-ai-gray">20 Days</p>
+                        </div>
+                        <div class="text-center p-3 bg-pink-50 rounded-lg border border-pink-100">
+                            <i class="fa-solid fa-gift text-ai-pink text-xl mb-2"></i>
+                            <p class="text-sm font-medium text-ai-gray">Prizes Awarded</p>
+                        </div>
+                    </div>
+
+                    <div class="flex flex-wrap gap-2 mb-8">
+                        <span class="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-xs font-mono">Python</span>
+                        <span class="bg-purple-100 text-purple-700 px-3 py-1 rounded-full text-xs font-mono">NLP</span>
+                        <span class="bg-pink-100 text-pink-700 px-3 py-1 rounded-full text-xs font-mono">Gemini API</span>
+                    </div>
+
+                    <button class="w-full mt-auto bg-ai-purple text-white px-6 py-3 rounded-xl font-semibold hover:bg-ai-dark-purple transition-colors group">
+                        <i class="fas fa-code mr-2 group-hover:animate-pulse"></i>Join Challenge
+                    </button>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+</section>
+
+<!-- COMPONENT: Team Section -->
+<section id="team" class="py-24 bg-slate-100/80 backdrop-blur-sm">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-16 animate-on-scroll">
+            <h2 class="text-4xl font-bold text-ai-gray mb-4">Meet Our Team</h2>
+            <p class="text-lg text-slate-500 max-w-2xl mx-auto">Passionate leaders driving AI & Data Science innovation and fostering a vibrant learning community.</p>
+        </div>
+        
+        <div class="grid md:grid-cols-2 xl:grid-cols-4 gap-8">
+            <!-- Team Member 1: Club Lead -->
+            <div class="animate-on-scroll group bg-white rounded-3xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 overflow-hidden">
+                <div class="relative h-64 p-6 flex flex-col justify-between">
+                    <img src="./images/Din.jpg" alt="Surapaneni Dinesh Babu" class="absolute inset-0 w-full h-full object-cover">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+                    <div class="relative flex justify-end">
+                        <div class="w-12 h-12 bg-ai-yellow rounded-full flex items-center justify-center text-ai-gray text-lg shadow-md">
+                            <i class="fa-solid fa-crown"></i>
+                        </div>
+                    </div>
+                    <div class="relative text-white">
+                        <h4 class="text-xl font-bold mb-1">Surapaneni Dinesh Babu</h4>
+                        <p class="font-semibold text-ai-yellow">Coordinator</p>
+                    </div>
+                </div>
+                <div class="p-6">
+                    <div class="flex items-center justify-between mb-4">
+                        <span class="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-xs font-mono">22501A4460</span>
+                        <span class="text-slate-500 text-sm font-semibold">CSD</span>
+                    </div>
+                    <p class="text-slate-600 text-sm mb-4 h-16">Leading strategic initiatives and operational excellence for the AI Club community.</p>
+                    <div class="flex space-x-3">
+                        <a href="#" class="w-10 h-10 bg-slate-100 rounded-lg flex items-center justify-center text-slate-500 hover:bg-ai-blue hover:text-white transition-all"><i class="fa-brands fa-linkedin-in"></i></a>
+                        <a href="#" class="w-10 h-10 bg-slate-100 rounded-lg flex items-center justify-center text-slate-500 hover:bg-ai-gray hover:text-white transition-all"><i class="fa-brands fa-github"></i></a>
+                        <a href="#" class="w-10 h-10 bg-slate-100 rounded-lg flex items-center justify-center text-slate-500 hover:bg-ai-pink hover:text-white transition-all"><i class="fa-solid fa-envelope"></i></a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Team Member 2: Events Lead -->
+            <div class="animate-on-scroll group bg-white rounded-3xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 overflow-hidden" style="transition-delay: 450ms;">
+                <div class="relative h-64 p-6 flex flex-col justify-between">
+                    <img src="./images/siv.jpg" alt="Kanaparthi Sesha Sai Sivani" class="absolute inset-0 w-full h-full object-cover">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+                    <div class="relative flex justify-end">
+                        <div class="w-12 h-12 bg-ai-orange rounded-full flex items-center justify-center text-white text-lg shadow-md">
+                            <i class="fa-solid fa-microphone"></i>
+                        </div>
+                    </div>
+                    <div class="relative text-white">
+                        <h4 class="text-xl font-bold mb-1">Kanaparthi Sesha Sai Sivani</h4>
+                        <p class="font-semibold text-ai-orange">Coordinator</p>
+                    </div>
+                </div>
+                <div class="p-6">
+                    <div class="flex items-center justify-between mb-4">
+                        <span class="bg-green-100 text-green-700 px-3 py-1 rounded-full text-xs font-mono">22501A4423</span>
+                        <span class="text-slate-500 text-sm font-semibold">CSD</span>
+                    </div>
+                    <p class="text-slate-600 text-sm mb-4 h-16">Hosting engaging events and ensuring smooth communication across all club activities.</p>
+                    <div class="flex space-x-3">
+                        <a href="#" class="w-10 h-10 bg-slate-100 rounded-lg flex items-center justify-center text-slate-500 hover:bg-ai-blue hover:text-white transition-all"><i class="fa-brands fa-linkedin-in"></i></a>
+                        <a href="#" class="w-10 h-10 bg-slate-100 rounded-lg flex items-center justify-center text-slate-500 hover:bg-ai-gray hover:text-white transition-all"><i class="fa-brands fa-github"></i></a>
+                        <a href="#" class="w-10 h-10 bg-slate-100 rounded-lg flex items-center justify-center text-slate-500 hover:bg-ai-pink hover:text-white transition-all"><i class="fa-solid fa-envelope"></i></a>
+                    </div>
+                </div>
+            </div>
+            <!-- Team Member 3: Community Lead -->
+            <div class="animate-on-scroll group bg-white rounded-3xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 overflow-hidden" style="transition-delay: 150ms;">
+                 <div class="relative h-64 p-6 flex flex-col justify-between">
+                    <img src="./images/Mon.jpg" alt="Mudigonda Manogna" class="absolute inset-0 w-full h-full object-cover">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+                    <div class="relative flex justify-end">
+                        <div class="w-12 h-12 bg-ai-pink rounded-full flex items-center justify-center text-white text-lg shadow-md">
+                            <i class="fa-solid fa-users"></i>
+                        </div>
+                    </div>
+                    <div class="relative text-white">
+                        <h4 class="text-xl font-bold mb-1">Mudigonda Manogna</h4>
+                        <p class="font-semibold text-ai-pink">Coordinator</p>
+                    </div>
+                </div>
+                <div class="p-6">
+                    <div class="flex items-center justify-between mb-4">
+                        <span class="bg-purple-100 text-purple-700 px-3 py-1 rounded-full text-xs font-mono">22501A4236</span>
+                        <span class="text-slate-500 text-sm font-semibold">CSM</span>
+                    </div>
+                    <p class="text-slate-600 text-sm mb-4 h-16">Building vibrant community connections and fostering collaborative learning environments.</p>
+                     <div class="flex space-x-3">
+                        <a href="#" class="w-10 h-10 bg-slate-100 rounded-lg flex items-center justify-center text-slate-500 hover:bg-ai-blue hover:text-white transition-all"><i class="fa-brands fa-linkedin-in"></i></a>
+                        <a href="#" class="w-10 h-10 bg-slate-100 rounded-lg flex items-center justify-center text-slate-500 hover:bg-ai-gray hover:text-white transition-all"><i class="fa-brands fa-github"></i></a>
+                        <a href="#" class="w-10 h-10 bg-slate-100 rounded-lg flex items-center justify-center text-slate-500 hover:bg-ai-pink hover:text-white transition-all"><i class="fa-solid fa-envelope"></i></a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Team Member 4: Content Lead -->
+            <div class="animate-on-scroll group bg-white rounded-3xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 overflow-hidden" style="transition-delay: 300ms;">
+                 <div class="relative h-64 p-6 flex flex-col justify-between">
+                    <img src="./images/Sur.jpg" alt="Y. Sree Surya" class="absolute inset-0 w-full h-full object-cover">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+                    <div class="relative flex justify-end">
+                        <div class="w-12 h-12 bg-ai-cyan rounded-full flex items-center justify-center text-white text-lg shadow-md">
+                            <i class="fa-solid fa-pen-nib"></i>
+                        </div>
+                    </div>
+                    <div class="relative text-white">
+                        <h4 class="text-xl font-bold mb-1">Y. Sree Surya</h4>
+                        <p class="font-semibold text-ai-cyan">Coordinator</p>
+                    </div>
+                </div>
+                <div class="p-6">
+                    <div class="flex items-center justify-between mb-4">
+                        <span class="bg-yellow-100 text-yellow-700 px-3 py-1 rounded-full text-xs font-mono">22501A4265</span>
+                        <span class="text-slate-500 text-sm font-semibold">CSM</span>
+                    </div>
+                    <p class="text-slate-600 text-sm mb-4 h-16">Creating engaging content and educational materials for our AI learning community.</p>
+                     <div class="flex space-x-3">
+                        <a href="#" class="w-10 h-10 bg-slate-100 rounded-lg flex items-center justify-center text-slate-500 hover:bg-ai-blue hover:text-white transition-all"><i class="fa-brands fa-linkedin-in"></i></a>
+                        <a href="#" class="w-10 h-10 bg-slate-100 rounded-lg flex items-center justify-center text-slate-500 hover:bg-ai-gray hover:text-white transition-all"><i class="fa-brands fa-github"></i></a>
+                        <a href="#" class="w-10 h-10 bg-slate-100 rounded-lg flex items-center justify-center text-slate-500 hover:bg-ai-pink hover:text-white transition-all"><i class="fa-solid fa-envelope"></i></a>
+                    </div>
+                </div>
+            </div>
+
+            
+        </div>
+
+        <!-- <div class="bg-white rounded-3xl p-8 shadow-lg animate-on-scroll">
+            <h3 class="text-3xl font-bold text-ai-gray mb-8 text-center">Our Growing Community</h3>
+            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <div class="text-center">
+                    <div class="w-20 h-20 bg-gradient-to-r from-ai-blue to-ai-purple rounded-2xl flex items-center justify-center mx-auto mb-4 animate-pulse-slow">
+                        <i class="fa-solid fa-users text-white text-3xl"></i>
+                    </div>
+                    <div class="text-3xl font-bold text-ai-gray mb-2 font-mono stat-counter">150+</div>
+                    <p class="text-slate-600">Active Members</p>
+                </div>
+                <div class="text-center">
+                    <div class="w-20 h-20 bg-gradient-to-r from-ai-purple to-ai-pink rounded-2xl flex items-center justify-center mx-auto mb-4 animate-pulse-slow">
+                        <i class="fa-solid fa-project-diagram text-white text-3xl"></i>
+                    </div>
+                    <div class="text-3xl font-bold text-ai-gray mb-2 font-mono stat-counter">25+</div>
+                    <p class="text-slate-600">AI Projects</p>
+                </div>
+                <div class="text-center">
+                    <div class="w-20 h-20 bg-gradient-to-r from-ai-cyan to-ai-green rounded-2xl flex items-center justify-center mx-auto mb-4 animate-pulse-slow">
+                        <i class="fa-solid fa-graduation-cap text-white text-3xl"></i>
+                    </div>
+                    <div class="text-3xl font-bold text-ai-gray mb-2 font-mono stat-counter">75+</div>
+                    <p class="text-slate-600">Alumni Network</p>
+                </div>
+                <div class="text-center">
+                    <div class="w-20 h-20 bg-gradient-to-r from-ai-orange to-ai-yellow rounded-2xl flex items-center justify-center mx-auto mb-4 animate-pulse-slow">
+                        <i class="fa-solid fa-trophy text-white text-3xl"></i>
+                    </div>
+                    <div class="text-3xl font-bold text-ai-gray mb-2 font-mono stat-counter">15+</div>
+                    <p class="text-slate-600">Awards Won</p>
+                </div>
+            </div>
+        </div> -->
+    </div>
+</section>
+
+<!-- COMPONENT: Animated Carousel Gallery -->
+<section id="gallery" class="py-24 bg-white/80 backdrop-blur-sm">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-12 animate-on-scroll">
+            <h2 class="text-4xl font-bold text-ai-gray mb-6">Gallery</h2>
+            <p class="text-xl text-gray-600">Capturing moments of innovation, learning, and community</p>
+        </div>
+        
+        <div class="relative animate-on-scroll">
+            <!-- Carousel Wrapper -->
+            <div id="carousel-container" class="carousel-container flex overflow-x-auto scroll-smooth pb-4 -mx-4 px-4">
+                <!-- Carousel Items -->
+                <div class="carousel-item flex-shrink-0 w-full sm:w-1/2 lg:w-1/3 p-4">
+                    <div class="group relative overflow-hidden rounded-2xl aspect-square shadow-lg">
+                        <img class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" src="./images/samp1.png" alt="AI workshop">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex items-end p-6 opacity-0 group-hover:opacity-100 transition-opacity">
+                            <h4 class="text-white font-bold text-lg">Machine Learning Workshop</h4>
+                        </div>
+                    </div>
+                </div>
+                <div class="carousel-item flex-shrink-0 w-full sm:w-1/2 lg:w-1/3 p-4">
+                     <div class="group relative overflow-hidden rounded-2xl aspect-square shadow-lg">
+                        <img class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" src="./images//samp2.png" alt="Hackathon event">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex items-end p-6 opacity-0 group-hover:opacity-100 transition-opacity">
+                            <h4 class="text-white font-bold text-lg">AI Innovation Hackathon</h4>
+                        </div>
+                    </div>
+                </div>
+                <div class="carousel-item flex-shrink-0 w-full sm:w-1/2 lg:w-1/3 p-4">
+                     <div class="group relative overflow-hidden rounded-2xl aspect-square shadow-lg">
+                        <img class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" src="./images/samp3.png" alt="Guest speaker">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex items-end p-6 opacity-0 group-hover:opacity-100 transition-opacity">
+                            <h4 class="text-white font-bold text-lg">Industry Expert Lecture</h4>
+                        </div>
+                    </div>
+                </div>
+                <div class="carousel-item flex-shrink-0 w-full sm:w-1/2 lg:w-1/3 p-4">
+                     <div class="group relative overflow-hidden rounded-2xl aspect-square shadow-lg">
+                        <img class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" src="./images/samp4.png" alt="Robotics demonstration">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex items-end p-6 opacity-0 group-hover:opacity-100 transition-opacity">
+                            <h4 class="text-white font-bold text-lg">Robotics & AI Integration</h4>
+                        </div>
+                    </div>
+                </div>
+                 <div class="carousel-item flex-shrink-0 w-full sm:w-1/2 lg:w-1/3 p-4">
+                     <div class="group relative overflow-hidden rounded-2xl aspect-square shadow-lg">
+                        <img class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" src="./images/samp5.png" alt="Data visualization workshop">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex items-end p-6 opacity-0 group-hover:opacity-100 transition-opacity">
+                            <h4 class="text-white font-bold text-lg">Data Visualization Masterclass</h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Navigation Buttons -->
+            <button id="prev-btn" class="absolute top-1/2 left-0 -translate-y-1/2 bg-white/80 backdrop-blur-sm text-ai-gray rounded-full w-12 h-12 flex items-center justify-center shadow-lg hover:bg-white transition">
+                <i class="fas fa-chevron-left"></i>
+            </button>
+            <button id="next-btn" class="absolute top-1/2 right-0 -translate-y-1/2 bg-white/80 backdrop-blur-sm text-ai-gray rounded-full w-12 h-12 flex items-center justify-center shadow-lg hover:bg-white transition">
+                <i class="fas fa-chevron-right"></i>
+            </button>
+        </div>
+    </div>
+</section>
+
+
+<!-- COMPONENT: Contact Section -->
+<section id="contact" class="py-24 bg-gray-100/80 backdrop-blur-sm">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-16 animate-on-scroll">
+            <h2 class="text-4xl font-bold text-ai-gray mb-4">Get In Touch</h2>
+            <p class="text-lg text-slate-500 max-w-2xl mx-auto">Have questions or ready to join our AI community? We'd love to hear from you!</p>
+        </div>
+        
+        <div class="grid lg:grid-cols-2 gap-12 mb-16">
+            <!-- Left Column: Information -->
+            <div class="animate-on-scroll">
+                <div class="mb-8">
+                    <h3 class="text-3xl font-bold text-ai-gray mb-4">Join the AI Revolution</h3>
+                    <p class="text-lg text-gray-600">Whether you're a beginner curious about AI or an experienced developer, our club welcomes all levels of expertise. Fill out the registration form to become part of our innovative community.</p>
+                </div>
+                
+                <!-- Enhanced Contact Info Cards -->
+                <div class="space-y-6 mb-10">
+                    <div class="flex items-center space-x-4 p-4 bg-white rounded-2xl shadow-md hover:shadow-lg transition-all transform hover:scale-105 cursor-pointer">
+                        <div class="w-12 h-12 bg-gradient-to-r from-ai-blue to-ai-purple rounded-xl flex items-center justify-center shrink-0"><i class="fa-solid fa-envelope text-white"></i></div>
+                        <div>
+                            <h4 class="font-semibold text-ai-gray">Email Us</h4>
+                            <p class="text-gray-600 text-sm">aiclub@pvpsit.edu.in</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center space-x-4 p-4 bg-white rounded-2xl shadow-md hover:shadow-lg transition-all transform hover:scale-105 cursor-pointer">
+                        <div class="w-12 h-12 bg-gradient-to-r from-ai-purple to-ai-pink rounded-xl flex items-center justify-center shrink-0"><i class="fa-solid fa-map-marker-alt text-white"></i></div>
+                        <div>
+                            <h4 class="font-semibold text-ai-gray">Location</h4>
+                            <p class="text-gray-600 text-sm">PVPSIT Campus, <br>Computer Science and Engineering (Data Science, AI&ML) Department</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center space-x-4 p-4 bg-white rounded-2xl shadow-md hover:shadow-lg transition-all transform hover:scale-105 cursor-pointer">
+                        <div class="w-12 h-12 bg-gradient-to-r from-ai-yellow to-ai-orange rounded-xl flex items-center justify-center shrink-0"><i class="fa-solid fa-clock text-white"></i></div>
+                        <div>
+                            <h4 class="font-semibold text-ai-gray">Meeting Times</h4>
+                            <p class="text-gray-600 text-sm">Everyday, 4:30 PM - 5:00 PM</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Social Media Links -->
+                <div>
+                    <h4 class="text-xl font-bold text-ai-gray mb-4">Connect With Us</h4>
+                    <div class="flex space-x-4">
+                        <a href="#" class="w-12 h-12 bg-white shadow-md rounded-xl flex items-center justify-center text-[#0077b5] hover:bg-[#0077b5] hover:text-white transition-all transform hover:scale-110">
+                            <i class="fa-brands fa-linkedin-in text-xl"></i>
+                        </a>
+                        <a href="#" class="w-12 h-12 bg-white shadow-md rounded-xl flex items-center justify-center text-[#E4405F] hover:bg-[#E4405F] hover:text-white transition-all transform hover:scale-110">
+                            <i class="fa-brands fa-instagram text-xl"></i>
+                        </a>
+                        <a href="#" class="w-12 h-12 bg-white shadow-md rounded-xl flex items-center justify-center text-[#333] hover:bg-[#333] hover:text-white transition-all transform hover:scale-110">
+                            <i class="fa-brands fa-github text-xl"></i>
+                        </a>
+                        <a href="#" class="w-12 h-12 bg-white shadow-md rounded-xl flex items-center justify-center text-[#5865F2] hover:bg-[#5865F2] hover:text-white transition-all transform hover:scale-110">
+                            <i class="fa-brands fa-discord text-xl"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Right Column: Form -->
+            <div class="bg-white rounded-3xl p-8 shadow-lg animate-on-scroll" style="transition-delay: 150ms;">
+                <h3 class="text-2xl font-bold text-ai-gray mb-6">Registration Form</h3>
+                <iframe src="https://forms.gle/eteqfwBTZbAs6Grk7" 
+                            width="100%" 
+                            height="600" 
+                            frameborder="0" 
+                            marginheight="0" 
+                            marginwidth="0"
+                            class="rounded-xl border border-slate-200"
+                            title="AI Club Registration Form"
+                            loading="lazy">
+                        Loading registration form...
+                    </iframe>
+            </div>
+        </div>
+
+        <!-- Bottom CTA Banner
+        <div class="animate-on-scroll mt-16 bg-gradient-to-br from-ai-blue to-ai-purple rounded-3xl p-8 lg:p-12 text-white text-center shadow-2xl" style="transition-delay: 300ms;">
+            <h3 class="text-3xl font-bold mb-4">Ready to Start Your AI Journey?</h3>
+            <p class="text-xl text-blue-100 mb-6 max-w-2xl mx-auto">Join hundreds of students who are already exploring the exciting world of artificial intelligence with us.</p>
+            <button class="bg-ai-yellow text-ai-gray px-8 py-4 rounded-xl font-bold text-lg hover:bg-yellow-300 transform hover:-translate-y-1 transition-all shadow-lg hover:shadow-xl">
+                Join AI Club Today
+            </button>
+        </div> -->
+    </div>
+</section>
+
+<!-- COMPONENT: Footer -->
+<footer class="bg-ai-gray text-white py-16">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-12 mb-12">
+            <div>
+                <div class="flex items-center space-x-4 mb-6">
+                    <div class="w-12 h-12 bg-gradient-to-br from-ai-blue to-ai-purple rounded-xl flex items-center justify-center animate-glow"><i class="fa-solid fa-brain text-white text-xl"></i></div>
+                    <div>
+                        <h3 class="text-xl font-bold">AI Club</h3>
+                        <p class="text-slate-400 font-mono">PVPSIT</p>
+                    </div>
+                </div>
+                <p class="text-slate-400 mb-6 leading-relaxed">Exploring AI frontiers through innovation, collaboration, and hands-on learning.</p>
+            </div>
+            
+            <div>
+                <h4 class="text-lg font-bold mb-6">Quick Links</h4>
+                <ul class="space-y-3">
+                    <li><a href="#home" class="text-slate-400 hover:text-white transition-colors font-medium">Home</a></li>
+                    <li><a href="#about" class="text-slate-400 hover:text-white transition-colors font-medium">About</a></li>
+                    <li><a href="#events" class="text-slate-400 hover:text-white transition-colors font-medium">Events</a></li>
+                    <li><a href="#team" class="text-slate-400 hover:text-white transition-colors font-medium">Team</a></li>
+                    <li><a href="#gallery" class="text-slate-400 hover:text-white transition-colors font-medium">Gallery</a></li>
+                </ul>
+            </div>
+            
+            <div>
+                <h4 class="text-lg font-bold mb-6">Activities</h4>
+                <ul class="space-y-3">
+                    <li><a href="#events" class="text-slate-400 hover:text-white transition-colors font-medium">Data Detectives</a></li>
+                    <li><a href="#events" class="text-slate-400 hover:text-white transition-colors font-medium">Build-a-Bot Challenge</a></li>
+                </ul>
+            </div>
+            
+            <div>
+                <h4 class="text-lg font-bold mb-6">Contact Info</h4>
+                <ul class="space-y-4">
+                    <li class="flex items-start space-x-3"><i class="fa-solid fa-envelope text-ai-blue mt-1"></i><span class="text-slate-400 font-mono text-sm">aiclub@pvpsit.edu.in</span></li>
+                    <li class="flex items-start space-x-3"><i class="fa-solid fa-map-marker-alt text-ai-purple mt-1"></i><span class="text-slate-400 text-sm">PVPSIT Campus, CSD,CSM Dept.</span></li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="border-t border-slate-700 pt-8 text-center">
+            <p class="text-slate-400 text-sm">© 2024 AI Club PVPSIT. All Rights Reserved.</p>
+        </div>
+    </div>
+</footer>
+
+<!-- JavaScript for Interactivity -->
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        // Mobile Menu Logic
+        const menuToggle = document.getElementById('menu-toggle');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const mobileOverlay = document.getElementById('mobile-overlay');
+        const closeMenu = document.getElementById('close-menu');
+        const mobileNavLinks = document.querySelectorAll('.mobile-nav-link');
+        
+        const openMobileMenu = () => {
+            mobileMenu.classList.add('active');
+            mobileOverlay.classList.remove('hidden');
+        };
+        const closeMobileMenu = () => {
+            mobileMenu.classList.remove('active');
+            mobileOverlay.classList.add('hidden');
+        };
+        
+        menuToggle.addEventListener('click', openMobileMenu);
+        closeMenu.addEventListener('click', closeMobileMenu);
+        mobileOverlay.addEventListener('click', closeMobileMenu);
+        mobileNavLinks.forEach(link => link.addEventListener('click', closeMobileMenu));
+
+        // Header Scroll Effect
+        const header = document.getElementById('header');
+        window.addEventListener('scroll', () => {
+            header.classList.toggle('shadow-lg', window.scrollY > 50);
+        });
+        
+        // Scroll-triggered Animations
+        const scrollObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('is-visible');
+                    scrollObserver.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.1 });
+        document.querySelectorAll('.animate-on-scroll').forEach(el => scrollObserver.observe(el));
+
+        // Carousel Logic
+        const carouselContainer = document.getElementById('carousel-container');
+        const prevBtn = document.getElementById('prev-btn');
+        const nextBtn = document.getElementById('next-btn');
+
+        if (carouselContainer) {
+            const scrollAmount = () => carouselContainer.querySelector('.carousel-item').offsetWidth;
+            
+            nextBtn.addEventListener('click', () => {
+                carouselContainer.scrollBy({ left: scrollAmount(), behavior: 'smooth' });
+            });
+            prevBtn.addEventListener('click', () => {
+                carouselContainer.scrollBy({ left: -scrollAmount(), behavior: 'smooth' });
+            });
+        }
+        // --- NEW: PARTICLE BACKGROUND & TOGGLE LOGIC ---
+
+        const colorToggleButton = document.getElementById('color-toggle');
+        const themeIcon = document.getElementById('theme-icon');
+        let isDarkMode = true;
+
+        // Configuration for the DARK theme
+        const darkParticlesConfig = {
+            background: { color: { value: '#111827' } }, // Tailwind gray-900
+            particles: {
+                number: { value: 80, density: { enable: true, value_area: 800 } },
+                color: { value: '#ffffff' },
+                shape: { type: 'circle' },
+                opacity: { value: 0.5, random: false, anim: { enable: false } },
+                size: { value: 3, random: true, anim: { enable: false } },
+                line_linked: { enable: true, distance: 150, color: '#ffffff', opacity: 0.4, width: 1 },
+                move: { enable: true, speed: 2, direction: 'none', random: false, straight: false, out_mode: 'out', bounce: false }
+            },
+            interactivity: {
+                detect_on: 'canvas',
+                events: { onhover: { enable: true, mode: 'repulse' }, onclick: { enable: true, mode: 'push' }, resize: true },
+                modes: { repulse: { distance: 100, duration: 0.4 }, push: { particles_nb: 4 } }
+            },
+            retina_detect: true
+        };
+
+        // Configuration for the LIGHT theme
+        const lightParticlesConfig = {
+            background: { color: { value: '#f9fafb' } }, // Tailwind gray-50
+            particles: {
+                number: { value: 80, density: { enable: true, value_area: 800 } },
+                color: { value: '#1e293b' }, // ai-gray
+                shape: { type: 'circle' },
+                opacity: { value: 0.6, random: false, anim: { enable: false } },
+                size: { value: 3, random: true, anim: { enable: false } },
+                line_linked: { enable: true, distance: 150, color: '#334155', opacity: 0.4, width: 1 }, // ai-light-gray
+                move: { enable: true, speed: 2, direction: 'none', random: false, straight: false, out_mode: 'out', bounce: false }
+            },
+            interactivity: {
+                detect_on: 'canvas',
+                events: { onhover: { enable: true, mode: 'grab' }, onclick: { enable: true, mode: 'push' }, resize: true },
+                modes: { grab: { distance: 140, line_opacity: 1 }, push: { particles_nb: 4 } }
+            },
+            retina_detect: true
+        };
+
+        // Function to load particles
+        const loadParticles = (config) => {
+            tsParticles.load({ id: "tsparticles", options: config });
+        };
+
+        // Initial load (Dark Mode)
+        loadParticles(darkParticlesConfig);
+
+        // Event listener for the toggle button
+        colorToggleButton.addEventListener('click', () => {
+            isDarkMode = !isDarkMode; // Flip the mode
+
+            if (isDarkMode) {
+                loadParticles(darkParticlesConfig);
+                themeIcon.classList.remove('fa-moon');
+                themeIcon.classList.add('fa-sun');
+            } else {
+                loadParticles(lightParticlesConfig);
+                themeIcon.classList.remove('fa-sun');
+                themeIcon.classList.add('fa-moon');
+            }
+        });
+    });
+</script>
+
+</body>
+</html>
