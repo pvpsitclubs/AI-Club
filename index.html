@@ -92,24 +92,32 @@
             scroll-snap-align: center;
         }
 
-        /* NEW: Styles for Particle Background Container */
         #tsparticles {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            z-index: -1; /* This is crucial to keep it in the background */
+            z-index: -1;
+        }
+        .modal {
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+        .modal.hidden {
+            opacity: 0;
+            visibility: hidden;
+        }
+        .modal-content {
+            transition: transform 0.3s ease;
+        }
+        .modal.hidden .modal-content {
+            transform: scale(0.95);
         }
     </style>
 </head>
-<body class="bg-transparent antialiased"> <!-- Changed bg-gray-50 to bg-transparent to let particles show through -->
+<body class="bg-transparent antialiased">
 
-<!-- NEW: Particle background container -->
 <div id="tsparticles"></div>
-<button id="color-toggle" class="fixed bottom-6 right-6 z-50 w-14 h-14 bg-white rounded-full shadow-lg flex items-center justify-center text-ai-gray hover:bg-slate-100 transition-all transform hover:scale-110">
-    <i id="theme-icon" class="fas fa-sun text-2xl"></i>
-</button>
     
 <!-- Mobile Menu -->
 <div id="mobile-overlay" class="fixed inset-0 bg-black bg-opacity-50 z-40 hidden transition-opacity duration-300"></div>
@@ -127,11 +135,13 @@
         <a href="#team" class="mobile-nav-link text-lg text-ai-gray hover:text-ai-blue font-medium transition-colors">Team</a>
         <a href="#gallery" class="mobile-nav-link text-lg text-ai-gray hover:text-ai-blue font-medium transition-colors">Gallery</a>
         <a href="#contact" class="mobile-nav-link text-lg text-ai-gray hover:text-ai-blue font-medium transition-colors">Contact</a>
+        <a href="https://chat.whatsapp.com/HOslMowPEoJ1H1AAVeYHly?mode=ems_copy_c" target="_blank" rel="noopener noreferrer" class="block text-center bg-gradient-to-r from-ai-blue to-ai-purple text-white px-6 py-3 rounded-lg font-semibold hover:shadow-lg transition-all duration-300">
+            Join Us
+        </a>
     </nav>
 </div>
 
-<!-- Give the image a class and remove inline styles -->
-<img src="./images/head.jpg"" alt="PVPSIT" width="100%" height="auto">
+<img src="./images/head.jpg" alt="PVPSIT" width="100%" height="auto">
 
 <!-- COMPONENT: Navigation Header -->
 <header id="header" class="bg-slate-100/80 backdrop-blur-lg shadow-sm sticky top-0 z-30 transition-all duration-300">
@@ -157,7 +167,7 @@
             </nav>
             
             <div class="flex items-center space-x-4">
-                <a href="#contact" class="hidden sm:block bg-gradient-to-r from-ai-blue to-ai-purple text-white px-6 py-2.5 rounded-lg font-semibold hover:shadow-lg transform hover:-translate-y-0.5 transition-all duration-300">
+                <a href="https://chat.whatsapp.com/HOslMowPEoJ1H1AAVeYHly?mode=ems_copy_c" target="_blank" rel="noopener noreferrer" class="hidden sm:block bg-gradient-to-r from-ai-blue to-ai-purple text-white px-6 py-2.5 rounded-lg font-semibold hover:shadow-lg transform hover:-translate-y-0.5 transition-all duration-300">
                     Join Us
                 </a>
                 <button id="menu-toggle" class="md:hidden text-ai-gray hover:text-ai-blue transition-colors">
@@ -292,44 +302,192 @@
                 </div>
             </div>
         </div>
+    </div>
+</section>
+
+<!-- COMPONENT: Events Section -->
+<section id="events" class="py-24 bg-gray-50/80 backdrop-blur-sm">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-16 animate-on-scroll">
+            <h2 class="text-4xl font-bold text-ai-gray mb-4">Upcoming Events</h2>
+            <p class="text-lg text-slate-500 max-w-3xl mx-auto">Don't miss these exciting, hands-on learning experiences designed to advance your AI expertise.</p>
+        </div>
         
-        <div class="mt-16 grid md:grid-cols-2 gap-8">
-            <div class="bg-white border-2 border-ai-blue rounded-2xl p-8">
-                <div class="flex items-center mb-6">
-                    <div class="w-12 h-12 bg-ai-blue rounded-xl flex items-center justify-center mr-4">
-                        <i class="fa-solid fa-comments text-white"></i>
+        <div class="flex flex-wrap items-stretch justify-center gap-8">
+
+            <!-- Card 1: Ai Games Creation Challenge -->
+            <div class="animate-on-scroll group bg-white rounded-3xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 overflow-hidden border border-slate-200 w-full max-w-lg flex flex-col">
+                <div class="relative h-64">
+                    <img class="w-full h-full object-cover" src="./images/Act1.jpg" alt="Detective-themed data analysis workshop">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+                    <div class="absolute top-4 right-4 bg-ai-yellow text-ai-gray px-3 py-1 rounded-full text-sm font-bold flex items-center gap-2 shadow-md">
+                        <i class="fas fa-calendar-alt"></i>Oct 25, 2025
                     </div>
-                    <h3 class="text-2xl font-bold text-ai-gray">Communication Hub</h3>
+                    <div class="absolute bottom-4 left-4 text-white text-sm font-semibold flex items-center gap-2">
+                        <i class="fas fa-users"></i><span>Team Workshop</span>
+                    </div>
                 </div>
-                <p class="text-gray-600 mb-4">
-                    We maintain active communication through Discord servers for daily interactions and our dedicated website 
-                    serves as the central hub for event calendars, learning resources, and project showcases.
-                </p>
-                <div class="flex space-x-3">
-                    <span class="bg-ai-blue/10 text-ai-blue px-3 py-1 rounded-full text-sm font-medium">Website</span>
-                    <span class="bg-ai-blue/10 text-ai-blue px-3 py-1 rounded-full text-sm font-medium">WhatsApp</span>
+                <div class="p-8 flex flex-col flex-grow">
+                    <h3 class="text-2xl font-bold text-ai-gray mb-3">Ai Games Creation Challenge</h3>
+                    <p class="text-slate-600 mb-6 text-sm flex-grow">A fun, beginner-friendly workshop where participants create their own AI-powered games. Teams will brainstorm game ideas, design characters, and implement basic AI mechanics using user-friendly tools.</p>
+                    <div class="grid grid-cols-2 gap-4 mb-6">
+                        <div class="text-center p-3 bg-blue-50 rounded-lg border border-blue-100">
+                            <i class="fa-solid fa-clock text-ai-blue text-xl mb-2"></i>
+                            <p class="text-sm font-medium text-ai-gray">3-4 Hours</p>
+                        </div>
+                        <div class="text-center p-3 bg-purple-50 rounded-lg border border-purple-100">
+                            <i class="fa-solid fa-gift text-ai-green text-xl mb-2"></i>
+                            <p class="text-sm font-medium text-ai-gray">Prizes Awarded</p>
+                        </div>
+                    </div>
+                    <div class="flex flex-wrap gap-2 mb-8">
+                        <span class="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-xs font-mono">Python</span>
+                        <span class="bg-purple-100 text-purple-700 px-3 py-1 rounded-full text-xs font-mono">Pandas</span>
+                        <span class="bg-green-100 text-green-700 px-3 py-1 rounded-full text-xs font-mono">Colab</span>
+                    </div>
+                    <button data-modal-target="ai-games-modal" class="w-full mt-auto bg-ai-blue text-white px-6 py-3 rounded-xl font-semibold hover:bg-ai-dark-blue transition-colors group">
+                        <i class="fas fa-info-circle mr-2 group-hover:rotate-12 transition-transform"></i>Learn More
+                    </button>
                 </div>
             </div>
             
-            <div class="bg-white border-2 border-ai-purple rounded-2xl p-8">
-                <div class="flex items-center mb-6">
-                    <div class="w-12 h-12 bg-ai-purple rounded-xl flex items-center justify-center mr-4">
-                        <i class="fa-solid fa-cloud text-white"></i>
+            <!-- Card 2: Build-a-Bot Challenge -->
+            <div class="animate-on-scroll group bg-white rounded-3xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 overflow-hidden border border-slate-200 w-full max-w-lg flex flex-col" style="transition-delay: 150ms;">
+                <div class="relative h-64">
+                     <img class="w-full h-full object-cover" src="./images/Act2.png" alt="Chatbot development challenge">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+                    <div class="absolute top-4 right-4 bg-ai-yellow text-ai-gray px-3 py-1 rounded-full text-sm font-bold flex items-center gap-2 shadow-md">
+                        <i class="fas fa-calendar-alt"></i>Not Decided
                     </div>
-                    <h3 class="text-2xl font-bold text-ai-gray">Shared Resources</h3>
+                    <div class="absolute bottom-4 left-4 text-white text-sm font-semibold flex items-center gap-2">
+                        <i class="fas fa-trophy"></i><span>Competition</span>
+                    </div>
                 </div>
-                <p class="text-gray-600 mb-4">
-                    All project files, code samples, research papers, and learning materials are stored in our shared 
-                    Google Drive, ensuring every member has access to comprehensive resources for continuous learning.
-                </p>
-                <div class="flex space-x-3">
-                    <span class="bg-ai-purple/10 text-ai-purple px-3 py-1 rounded-full text-sm font-medium">Google Drive</span>
-                    <span class="bg-ai-purple/10 text-ai-purple px-3 py-1 rounded-full text-sm font-medium">GitHub</span>
+                <div class="p-8 flex flex-col flex-grow">
+                    <h3 class="text-2xl font-bold text-ai-gray mb-3">Build-a-Bot Challenge</h3>
+                    <p class="text-slate-600 mb-6 text-sm flex-grow">A comprehensive session focused on building a functional Question-Answering chatbot from scratch. This multi-phase challenge includes remote development time and culminates in a live showcase with expert judging.</p>
+                     <div class="grid grid-cols-2 gap-4 mb-6">
+                        <div class="text-center p-3 bg-purple-50 rounded-lg border border-purple-100">
+                            <i class="fa-solid fa-calendar text-ai-purple text-xl mb-2"></i>
+                            <p class="text-sm font-medium text-ai-gray">20 Days</p>
+                        </div>
+                        <div class="text-center p-3 bg-pink-50 rounded-lg border border-pink-100">
+                            <i class="fa-solid fa-gift text-ai-pink text-xl mb-2"></i>
+                            <p class="text-sm font-medium text-ai-gray">Prizes Awarded</p>
+                        </div>
+                    </div>
+                    <div class="flex flex-wrap gap-2 mb-8">
+                        <span class="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-xs font-mono">Python</span>
+                        <span class="bg-purple-100 text-purple-700 px-3 py-1 rounded-full text-xs font-mono">NLP</span>
+                        <span class="bg-pink-100 text-pink-700 px-3 py-1 rounded-full text-xs font-mono">Gemini API</span>
+                    </div>
+                    <button data-modal-target="build-a-bot-modal" class="w-full mt-auto bg-ai-purple text-white px-6 py-3 rounded-xl font-semibold hover:bg-ai-dark-purple transition-colors group">
+                        <i class="fas fa-info-circle mr-2 group-hover:rotate-12 transition-transform"></i>Learn More
+                    </button>
                 </div>
             </div>
         </div>
     </div>
 </section>
+
+
+<!-- MODALS -->
+<!-- AI Games Creation Challenge Modal -->
+<div id="ai-games-modal" class="modal fixed inset-0 z-50 flex items-center justify-center p-4 bg-black bg-opacity-60 backdrop-blur-sm hidden">
+    <div class="modal-content bg-white rounded-2xl shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto transform">
+        <div class="p-6 md:p-8">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-2xl md:text-3xl font-bold text-ai-gray">📢 Ai Games Creation Challenge</h2>
+                <button data-modal-close="ai-games-modal" class="text-gray-400 hover:text-ai-blue transition-colors">
+                    <i class="fas fa-times text-2xl"></i>
+                </button>
+            </div>
+            <div class="text-gray-600 space-y-4">
+                <p class="font-semibold text-lg">🔥 Let’s innovate, compete & create something impactful! 💡</p>
+                
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 text-center">
+                    <div class="bg-slate-100 p-3 rounded-lg"><span class="font-bold">Date:</span> 25th Oct 2025 (Saturday)</div>
+                    <div class="bg-slate-100 p-3 rounded-lg"><span class="font-bold">Duration:</span> 3-4 Hours (Offline)</div>
+                    <div class="bg-slate-100 p-3 rounded-lg"><span class="font-bold">Team Size:</span> 2 Members</div>
+                </div>
+
+                <div>
+                    <h3 class="font-bold text-ai-gray text-lg mb-2">🎓 Eligibility:</h3>
+                    <p>Open to 2nd, 3rd & 4th Year Students of CSE, CSM, CSD, IT, ECE, EEE, MEC, & CIVIL at PVPSIT.</p>
+                </div>
+                
+                <div>
+                    <h3 class="font-bold text-ai-gray text-lg mb-2">📌 Event Details:</h3>
+                    <ul class="list-disc list-inside space-y-2 pl-2">
+                        <li>Problem statements will be assigned based on the team's academic year.</li>
+                        <li><strong>2nd Years:</strong> On-the-spot challenge to build a beginner-level AI Bot Game.</li>
+                        <li><strong>3rd Years:</strong> On-the-spot challenge to build an intermediate-level AI Bot Game.</li>
+                        <li><strong>4th Years:</strong> On-the-spot challenge to build an advanced-level AI Bot Game.</li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h3 class="font-bold text-ai-gray text-lg mb-2">🏆 Awards:</h3>
+                     <ul class="list-disc list-inside space-y-2 pl-2">
+                        <li>🎖️ Certificates for all participating teams.</li>
+                        <li>💰 Prize money for the winning team from each academic year.</li>
+                        <li>✨ Mementos for all winning teams.</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="mt-8 text-center">
+                <a href="https://forms.gle/sWecxHxtmN7ZhJhQ7" target="_blank" rel="noopener noreferrer" class="inline-block w-full sm:w-auto bg-ai-green text-white px-8 py-3 rounded-xl font-semibold text-lg hover:bg-green-600 transform hover:-translate-y-1 transition-all shadow-lg">
+                    Register Now
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Build-a-Bot Challenge Modal -->
+<div id="build-a-bot-modal" class="modal fixed inset-0 z-50 flex items-center justify-center p-4 bg-black bg-opacity-60 backdrop-blur-sm hidden">
+    <div class="modal-content bg-white rounded-2xl shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto transform">
+        <div class="p-6 md:p-8">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-2xl md:text-3xl font-bold text-ai-gray">🤖 Build-a-Bot Challenge</h2>
+                <button data-modal-close="build-a-bot-modal" class="text-gray-400 hover:text-ai-purple transition-colors">
+                    <i class="fas fa-times text-2xl"></i>
+                </button>
+            </div>
+            <div class="text-gray-600 space-y-4">
+                <p class="font-semibold text-lg">Create a functional Question-Answering chatbot from scratch!</p>
+                
+                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-center">
+                    <div class="bg-slate-100 p-3 rounded-lg"><span class="font-bold">Duration:</span> 20-Day Challenge</div>
+                    <div class="bg-slate-100 p-3 rounded-lg"><span class="font-bold">Format:</span> Remote Development + Live Showcase</div>
+                </div>
+
+                <div>
+                    <h3 class="font-bold text-ai-gray text-lg mb-2">📌 Event Details:</h3>
+                    <ul class="list-disc list-inside space-y-2 pl-2">
+                        <li>This is a multi-phase competition focused on Natural Language Processing.</li>
+                        <li>Participants will have 20 days to develop their chatbot.</li>
+                        <li>The challenge culminates in a live demonstration and showcase event.</li>
+                        <li>Projects will be evaluated by a panel of expert judges.</li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h3 class="font-bold text-ai-gray text-lg mb-2">🏆 Awards:</h3>
+                     <ul class="list-disc list-inside space-y-2 pl-2">
+                        <li>🎖️ Certificates for all participants.</li>
+                        <li>💰 Significant prize money for top-performing teams.</li>
+                    </ul>
+                </div>
+            </div>
+             <div class="mt-8 text-center">
+                <a href="https://forms.gle/sWecxHxtmN7ZhJhQ7" target="_blank" rel="noopener noreferrer" class="inline-block w-full sm:w-auto bg-ai-purple text-white px-8 py-3 rounded-xl font-semibold text-lg hover:bg-ai-dark-purple transform hover:-translate-y-1 transition-all shadow-lg">
+                    Register Now
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
 
 <!-- COMPONENT: What We Do -->
 <section id="what-we-do" class="py-24 bg-slate-200/80 backdrop-blur-sm">
@@ -412,104 +570,6 @@
                 <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/numpy/numpy-original.svg" class="h-16 mx-auto mb-4 grayscale group-hover:grayscale-0 transition-all" alt="NumPy Icon"/>
                 <h4 class="font-bold text-ai-gray">NumPy</h4>
             </div>
-        </div>
-    </div>
-</section>
-
-
-<!-- COMPONENT: Events Section -->
-<section id="events" class="py-24 bg-gray-50/80 backdrop-blur-sm">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="text-center mb-16 animate-on-scroll">
-            <h2 class="text-4xl font-bold text-ai-gray mb-4">Upcoming Events</h2>
-            <p class="text-lg text-slate-500 max-w-3xl mx-auto">Don't miss these exciting, hands-on learning experiences designed to advance your AI expertise.</p>
-        </div>
-        
-        <!-- Flex container to center the cards -->
-        <div class="flex flex-wrap items-stretch justify-center gap-8">
-
-            <!-- Combined Card 1: Data Detectives Workshop -->
-            <div class="animate-on-scroll group bg-white rounded-3xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 overflow-hidden border border-slate-200 w-full max-w-lg flex flex-col">
-                <!-- Image Header with Details -->
-                <div class="relative h-64">
-                    <img class="w-full h-full object-cover" src="./images/Act1.png" alt="Detective-themed data analysis workshop">
-                    <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
-                    <div class="absolute top-4 right-4 bg-ai-yellow text-ai-gray px-3 py-1 rounded-full text-sm font-bold flex items-center gap-2 shadow-md">
-                        <i class="fas fa-calendar-alt"></i>Not Decided
-                    </div>
-                    <div class="absolute bottom-4 left-4 text-white text-sm font-semibold flex items-center gap-2">
-                        <i class="fas fa-users"></i><span>Team Workshop</span>
-                    </div>
-                </div>
-                <!-- Content Body -->
-                <div class="p-8 flex flex-col flex-grow">
-                    <h3 class="text-2xl font-bold text-ai-gray mb-3">Data Detectives Workshop</h3>
-                    <p class="text-slate-600 mb-6 text-sm flex-grow">A fun, beginner-friendly workshop where data analysis is framed as a mystery to be solved. Participants form detective agencies to crack 'case files' using messy datasets, learning to clean data and uncover hidden patterns collaboratively.</p>
-                    
-                    <div class="grid grid-cols-2 gap-4 mb-6">
-                        <div class="text-center p-3 bg-blue-50 rounded-lg border border-blue-100">
-                            <i class="fa-solid fa-clock text-ai-blue text-xl mb-2"></i>
-                            <p class="text-sm font-medium text-ai-gray">3-4 Hours</p>
-                        </div>
-                        <div class="text-center p-3 bg-purple-50 rounded-lg border border-purple-100">
-                            <i class="fa-solid fa-gift text-ai-green text-xl mb-2"></i>
-                            <p class="text-sm font-medium text-ai-gray">Prizes Awarded</p>
-                        </div>
-                    </div>
-
-                    <div class="flex flex-wrap gap-2 mb-8">
-                        <span class="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-xs font-mono">Python</span>
-                        <span class="bg-purple-100 text-purple-700 px-3 py-1 rounded-full text-xs font-mono">Pandas</span>
-                        <span class="bg-green-100 text-green-700 px-3 py-1 rounded-full text-xs font-mono">Colab</span>
-                    </div>
-
-                    <button class="w-full mt-auto bg-ai-blue text-white px-6 py-3 rounded-xl font-semibold hover:bg-ai-dark-blue transition-colors group">
-                        <i class="fas fa-sign-in-alt mr-2 group-hover:translate-x-1 transition-transform"></i>Register Now
-                    </button>
-                </div>
-            </div>
-            
-            <!-- Combined Card 2: Build-a-Bot Challenge -->
-            <div class="animate-on-scroll group bg-white rounded-3xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 overflow-hidden border border-slate-200 w-full max-w-lg flex flex-col" style="transition-delay: 150ms;">
-                <!-- Image Header with Details -->
-                <div class="relative h-64">
-                     <img class="w-full h-full object-cover" src="./images/Act2.png" alt="Chatbot development challenge">
-                    <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
-                    <div class="absolute top-4 right-4 bg-ai-yellow text-ai-gray px-3 py-1 rounded-full text-sm font-bold flex items-center gap-2 shadow-md">
-                        <i class="fas fa-calendar-alt"></i>Not Decided
-                    </div>
-                    <div class="absolute bottom-4 left-4 text-white text-sm font-semibold flex items-center gap-2">
-                        <i class="fas fa-trophy"></i><span>Competition</span>
-                    </div>
-                </div>
-                 <!-- Content Body -->
-                <div class="p-8 flex flex-col flex-grow">
-                    <h3 class="text-2xl font-bold text-ai-gray mb-3">Build-a-Bot Challenge</h3>
-                    <p class="text-slate-600 mb-6 text-sm flex-grow">A comprehensive session focused on building a functional Question-Answering chatbot from scratch. This multi-phase challenge includes remote development time and culminates in a live showcase with expert judging.</p>
-                    
-                     <div class="grid grid-cols-2 gap-4 mb-6">
-                        <div class="text-center p-3 bg-purple-50 rounded-lg border border-purple-100">
-                            <i class="fa-solid fa-calendar text-ai-purple text-xl mb-2"></i>
-                            <p class="text-sm font-medium text-ai-gray">20 Days</p>
-                        </div>
-                        <div class="text-center p-3 bg-pink-50 rounded-lg border border-pink-100">
-                            <i class="fa-solid fa-gift text-ai-pink text-xl mb-2"></i>
-                            <p class="text-sm font-medium text-ai-gray">Prizes Awarded</p>
-                        </div>
-                    </div>
-
-                    <div class="flex flex-wrap gap-2 mb-8">
-                        <span class="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-xs font-mono">Python</span>
-                        <span class="bg-purple-100 text-purple-700 px-3 py-1 rounded-full text-xs font-mono">NLP</span>
-                        <span class="bg-pink-100 text-pink-700 px-3 py-1 rounded-full text-xs font-mono">Gemini API</span>
-                    </div>
-
-                    <button class="w-full mt-auto bg-ai-purple text-white px-6 py-3 rounded-xl font-semibold hover:bg-ai-dark-purple transition-colors group">
-                        <i class="fas fa-code mr-2 group-hover:animate-pulse"></i>Join Challenge
-                    </button>
-                </div>
-            </div>
-            
         </div>
     </div>
 </section>
@@ -637,43 +697,7 @@
                     </div>
                 </div>
             </div>
-
-            
         </div>
-
-        <!-- <div class="bg-white rounded-3xl p-8 shadow-lg animate-on-scroll">
-            <h3 class="text-3xl font-bold text-ai-gray mb-8 text-center">Our Growing Community</h3>
-            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-                <div class="text-center">
-                    <div class="w-20 h-20 bg-gradient-to-r from-ai-blue to-ai-purple rounded-2xl flex items-center justify-center mx-auto mb-4 animate-pulse-slow">
-                        <i class="fa-solid fa-users text-white text-3xl"></i>
-                    </div>
-                    <div class="text-3xl font-bold text-ai-gray mb-2 font-mono stat-counter">150+</div>
-                    <p class="text-slate-600">Active Members</p>
-                </div>
-                <div class="text-center">
-                    <div class="w-20 h-20 bg-gradient-to-r from-ai-purple to-ai-pink rounded-2xl flex items-center justify-center mx-auto mb-4 animate-pulse-slow">
-                        <i class="fa-solid fa-project-diagram text-white text-3xl"></i>
-                    </div>
-                    <div class="text-3xl font-bold text-ai-gray mb-2 font-mono stat-counter">25+</div>
-                    <p class="text-slate-600">AI Projects</p>
-                </div>
-                <div class="text-center">
-                    <div class="w-20 h-20 bg-gradient-to-r from-ai-cyan to-ai-green rounded-2xl flex items-center justify-center mx-auto mb-4 animate-pulse-slow">
-                        <i class="fa-solid fa-graduation-cap text-white text-3xl"></i>
-                    </div>
-                    <div class="text-3xl font-bold text-ai-gray mb-2 font-mono stat-counter">75+</div>
-                    <p class="text-slate-600">Alumni Network</p>
-                </div>
-                <div class="text-center">
-                    <div class="w-20 h-20 bg-gradient-to-r from-ai-orange to-ai-yellow rounded-2xl flex items-center justify-center mx-auto mb-4 animate-pulse-slow">
-                        <i class="fa-solid fa-trophy text-white text-3xl"></i>
-                    </div>
-                    <div class="text-3xl font-bold text-ai-gray mb-2 font-mono stat-counter">15+</div>
-                    <p class="text-slate-600">Awards Won</p>
-                </div>
-            </div>
-        </div> -->
     </div>
 </section>
 
@@ -686,9 +710,7 @@
         </div>
         
         <div class="relative animate-on-scroll">
-            <!-- Carousel Wrapper -->
             <div id="carousel-container" class="carousel-container flex overflow-x-auto scroll-smooth pb-4 -mx-4 px-4">
-                <!-- Carousel Items -->
                 <div class="carousel-item flex-shrink-0 w-full sm:w-1/2 lg:w-1/3 p-4">
                     <div class="group relative overflow-hidden rounded-2xl aspect-square shadow-lg">
                         <img class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" src="./images/samp1.png" alt="AI workshop">
@@ -731,7 +753,6 @@
                 </div>
             </div>
             
-            <!-- Navigation Buttons -->
             <button id="prev-btn" class="absolute top-1/2 left-0 -translate-y-1/2 bg-white/80 backdrop-blur-sm text-ai-gray rounded-full w-12 h-12 flex items-center justify-center shadow-lg hover:bg-white transition">
                 <i class="fas fa-chevron-left"></i>
             </button>
@@ -752,14 +773,12 @@
         </div>
         
         <div class="grid lg:grid-cols-2 gap-12 mb-16">
-            <!-- Left Column: Information -->
             <div class="animate-on-scroll">
                 <div class="mb-8">
                     <h3 class="text-3xl font-bold text-ai-gray mb-4">Join the AI Revolution</h3>
                     <p class="text-lg text-gray-600">Whether you're a beginner curious about AI or an experienced developer, our club welcomes all levels of expertise. Fill out the registration form to become part of our innovative community.</p>
                 </div>
                 
-                <!-- Enhanced Contact Info Cards -->
                 <div class="space-y-6 mb-10">
                     <div class="flex items-center space-x-4 p-4 bg-white rounded-2xl shadow-md hover:shadow-lg transition-all transform hover:scale-105 cursor-pointer">
                         <div class="w-12 h-12 bg-gradient-to-r from-ai-blue to-ai-purple rounded-xl flex items-center justify-center shrink-0"><i class="fa-solid fa-envelope text-white"></i></div>
@@ -784,7 +803,6 @@
                     </div>
                 </div>
 
-                <!-- Social Media Links -->
                 <div>
                     <h4 class="text-xl font-bold text-ai-gray mb-4">Connect With Us</h4>
                     <div class="flex space-x-4">
@@ -797,14 +815,13 @@
                         <a href="https://github.com/Aiclubpvpsit/" class="w-12 h-12 bg-white shadow-md rounded-xl flex items-center justify-center text-[#333] hover:bg-[#333] hover:text-white transition-all transform hover:scale-110">
                             <i class="fa-brands fa-github text-xl"></i>
                         </a>
-                        <a href="#" class="w-12 h-12 bg-white shadow-md rounded-xl flex items-center justify-center text-[#5865F2] hover:bg-[#5865F2] hover:text-white transition-all transform hover:scale-110">
+                        <a href="https://chat.whatsapp.com/HOslMowPEoJ1H1AAVeYHly?mode=ems_copy_c" target="_blank" class="w-12 h-12 bg-white shadow-md rounded-xl flex items-center justify-center text-[#5865F2] hover:bg-[#5865F2] hover:text-white transition-all transform hover:scale-110">
                             <i class="fa-brands fa-whatsapp text-xl"></i>
                         </a>
                     </div>
                 </div>
             </div>
             
-            <!-- Right Column: Form -->
             <div class="bg-white rounded-3xl p-8 shadow-lg animate-on-scroll" style="transition-delay: 150ms;">
                 <h3 class="text-2xl font-bold text-ai-gray mb-6">Registration Form</h3>
                 <iframe src="https://forms.gle/sWecxHxtmN7ZhJhQ7" 
@@ -820,15 +837,6 @@
                     </iframe>
             </div>
         </div>
-
-        <!-- Bottom CTA Banner
-        <div class="animate-on-scroll mt-16 bg-gradient-to-br from-ai-blue to-ai-purple rounded-3xl p-8 lg:p-12 text-white text-center shadow-2xl" style="transition-delay: 300ms;">
-            <h3 class="text-3xl font-bold mb-4">Ready to Start Your AI Journey?</h3>
-            <p class="text-xl text-blue-100 mb-6 max-w-2xl mx-auto">Join hundreds of students who are already exploring the exciting world of artificial intelligence with us.</p>
-            <button class="bg-ai-yellow text-ai-gray px-8 py-4 rounded-xl font-bold text-lg hover:bg-yellow-300 transform hover:-translate-y-1 transition-all shadow-lg hover:shadow-xl">
-                Join AI Club Today
-            </button>
-        </div> -->
     </div>
 </section>
 
@@ -884,7 +892,7 @@
 <!-- JavaScript for Interactivity -->
 <script>
     document.addEventListener('DOMContentLoaded', () => {
-        // Mobile Menu Logic
+        // --- Mobile Menu Logic ---
         const menuToggle = document.getElementById('menu-toggle');
         const mobileMenu = document.getElementById('mobile-menu');
         const mobileOverlay = document.getElementById('mobile-overlay');
@@ -905,13 +913,13 @@
         mobileOverlay.addEventListener('click', closeMobileMenu);
         mobileNavLinks.forEach(link => link.addEventListener('click', closeMobileMenu));
 
-        // Header Scroll Effect
+        // --- Header Scroll Effect ---
         const header = document.getElementById('header');
         window.addEventListener('scroll', () => {
             header.classList.toggle('shadow-lg', window.scrollY > 50);
         });
         
-        // Scroll-triggered Animations
+        // --- Scroll-triggered Animations ---
         const scrollObserver = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
@@ -922,12 +930,11 @@
         }, { threshold: 0.1 });
         document.querySelectorAll('.animate-on-scroll').forEach(el => scrollObserver.observe(el));
 
-        // Carousel Logic
+        // --- Carousel Logic ---
         const carouselContainer = document.getElementById('carousel-container');
-        const prevBtn = document.getElementById('prev-btn');
-        const nextBtn = document.getElementById('next-btn');
-
         if (carouselContainer) {
+            const prevBtn = document.getElementById('prev-btn');
+            const nextBtn = document.getElementById('next-btn');
             const scrollAmount = () => carouselContainer.querySelector('.carousel-item').offsetWidth;
             
             nextBtn.addEventListener('click', () => {
@@ -937,74 +944,64 @@
                 carouselContainer.scrollBy({ left: -scrollAmount(), behavior: 'smooth' });
             });
         }
-        // --- NEW: PARTICLE BACKGROUND & TOGGLE LOGIC ---
+        
+        // --- NEW: MODAL LOGIC ---
+        const openModalButtons = document.querySelectorAll('[data-modal-target]');
+        const closeModalButtons = document.querySelectorAll('[data-modal-close]');
 
-        const colorToggleButton = document.getElementById('color-toggle');
-        const themeIcon = document.getElementById('theme-icon');
-        let isDarkMode = true;
+        openModalButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                const modalId = button.getAttribute('data-modal-target');
+                const modal = document.getElementById(modalId);
+                if (modal) {
+                    modal.classList.remove('hidden');
+                }
+            });
+        });
 
-        // Configuration for the DARK theme
+        const closeModal = (modal) => {
+            if (modal) {
+                modal.classList.add('hidden');
+            }
+        };
+
+        closeModalButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                const modalId = button.getAttribute('data-modal-close');
+                const modal = document.getElementById(modalId);
+                closeModal(modal);
+            });
+        });
+
+        // Close modal when clicking the overlay
+        document.querySelectorAll('.modal').forEach(modal => {
+            modal.addEventListener('click', (event) => {
+                if (event.target === modal) {
+                    closeModal(modal);
+                }
+            });
+        });
+
+
+        // --- Particle Background Logic ---
         const darkParticlesConfig = {
-            background: { color: { value: '#111827' } }, // Tailwind gray-900
+            background: { color: { value: '#0ea5e9' } },
             particles: {
                 number: { value: 80, density: { enable: true, value_area: 800 } },
                 color: { value: '#ffffff' },
                 shape: { type: 'circle' },
-                opacity: { value: 0.5, random: false, anim: { enable: false } },
-                size: { value: 3, random: true, anim: { enable: false } },
+                opacity: { value: 0.5, random: false },
+                size: { value: 3, random: true },
                 line_linked: { enable: true, distance: 150, color: '#ffffff', opacity: 0.4, width: 1 },
-                move: { enable: true, speed: 2, direction: 'none', random: false, straight: false, out_mode: 'out', bounce: false }
+                move: { enable: true, speed: 2, direction: 'none', out_mode: 'out' }
             },
             interactivity: {
-                detect_on: 'canvas',
-                events: { onhover: { enable: true, mode: 'repulse' }, onclick: { enable: true, mode: 'push' }, resize: true },
-                modes: { repulse: { distance: 100, duration: 0.4 }, push: { particles_nb: 4 } }
+                events: { onhover: { enable: true, mode: 'repulse' }, onclick: { enable: true, mode: 'push' } },
+                modes: { repulse: { distance: 100 }, push: { particles_nb: 4 } }
             },
             retina_detect: true
         };
-
-        // Configuration for the LIGHT theme
-        const lightParticlesConfig = {
-            background: { color: { value: '#f9fafb' } }, // Tailwind gray-50
-            particles: {
-                number: { value: 80, density: { enable: true, value_area: 800 } },
-                color: { value: '#1e293b' }, // ai-gray
-                shape: { type: 'circle' },
-                opacity: { value: 0.6, random: false, anim: { enable: false } },
-                size: { value: 3, random: true, anim: { enable: false } },
-                line_linked: { enable: true, distance: 150, color: '#334155', opacity: 0.4, width: 1 }, // ai-light-gray
-                move: { enable: true, speed: 2, direction: 'none', random: false, straight: false, out_mode: 'out', bounce: false }
-            },
-            interactivity: {
-                detect_on: 'canvas',
-                events: { onhover: { enable: true, mode: 'grab' }, onclick: { enable: true, mode: 'push' }, resize: true },
-                modes: { grab: { distance: 140, line_opacity: 1 }, push: { particles_nb: 4 } }
-            },
-            retina_detect: true
-        };
-
-        // Function to load particles
-        const loadParticles = (config) => {
-            tsParticles.load({ id: "tsparticles", options: config });
-        };
-
-        // Initial load (Dark Mode)
-        loadParticles(darkParticlesConfig);
-
-        // Event listener for the toggle button
-        colorToggleButton.addEventListener('click', () => {
-            isDarkMode = !isDarkMode; // Flip the mode
-
-            if (isDarkMode) {
-                loadParticles(darkParticlesConfig);
-                themeIcon.classList.remove('fa-moon');
-                themeIcon.classList.add('fa-sun');
-            } else {
-                loadParticles(lightParticlesConfig);
-                themeIcon.classList.remove('fa-sun');
-                themeIcon.classList.add('fa-moon');
-            }
-        });
+        tsParticles.load({ id: "tsparticles", options: darkParticlesConfig });
     });
 </script>
 
